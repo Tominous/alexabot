@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
-// const client = new Discord.Client();
-// const config = require('./config.json');
-// const user = new Discord.Message();
-// const broadcast = client.createVoiceBroadcast();
-// const ytdl = require('ytdl-core');
-// const streamOptions = { seek: 0, volume: 1 };
-// const ytSearch = require( 'yt-search' )
+ const client = new Discord.Client();
+ const config = require('./config.json');
+ const user = new Discord.Message();
+ const broadcast = client.createVoiceBroadcast();
+ const ytdl = require('ytdl-core');
+ const streamOptions = { seek: 0, volume: 1 };
+ const ytSearch = require( 'yt-search' )
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./db/game.sqlite');
 const bannedChannelsSql = new SQLite('./db/bannedChannels.sqlite');
@@ -45,7 +45,7 @@ const Game = {
         const portfoliosTable = portfolios.prepare("SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'portfolios';").get();
         if (!portfoliosTable['count(*)']) {
             portfolios.prepare("CREATE TABLE portfolios (userId TEXT, symbol TEXT, companyName TEXT, qty INTEGER, purchasePrice INTEGER);").run();
-            //portfolios.prepare("CREATE UNIQUE INDEX idx_game_id ON traders (userId);").run();
+            portfolios.prepare("CREATE UNIQUE INDEX idx_game_id ON traders (userId);").run();
             portfolios.pragma("synchronous = 1");
             portfolios.pragma("journal_mode = wal");
         }
@@ -69,7 +69,7 @@ const Game = {
         const songQueueTable = songQueue.prepare("SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'songQueue';").get();
         if (!songQueueTable['count(*)']) {
             songQueue.prepare("CREATE TABLE songQueue (guildId TEXT, videoId TEXT, videoTitle TEXT, videoUploader TEXT, videoLength INTEGER, requestedBy TEXT, sortOrder INTEGER);").run();
-            //songQueue.prepare("CREATE UNIQUE INDEX idx_songQueue_id ON songQueue (guildId);").run();
+            songQueue.prepare("CREATE UNIQUE INDEX idx_songQueue_id ON songQueue (guildId);").run();
             songQueue.pragma("synchronous = 1");
             songQueue.pragma("journal_mode = wal");
         }
@@ -109,7 +109,7 @@ const Game = {
         if (profile.xp >= 50) {
             profile.level++;
             profile.skillPoints = profile.skillPoints + 5;
-            //message.channel.send("Congrats! You've leveled up to level " + profile.level);
+            message.channel.send("Congrats! You've leveled up to level " + profile.level);
             profile.xp = 0;
         };
         setTimeout(function(){client.setProfile.run(profile);}, 500);
@@ -232,7 +232,7 @@ const Game = {
                         console.log("instigator: ", instigatorId, typeof instigatorId);
                         console.log("victim: ", victimId, typeof victimId);
                         profile.currency = profile.currency - 10;
-                        //takeCoins.run(instigatorId);
+                        takeCoins.run(instigatorId);
                         giveCoins.run(10,victimId);
                         message.channel.send(`Oof. Ya got caught and had to pay them off with $10.`)
                     } else {
@@ -240,12 +240,12 @@ const Game = {
                         console.log("instigator: ", instigatorId);
                         console.log("victim: ", victimId);
                         profile.currency = profile.currency + 10;
-                        //giveCoins.run(instigatorId);
+                        giveCoins.run(instigatorId);
                         takeCoins.run(10,victimId);
                         message.channel.send(`Look at you, you sneaky boi. You managed to get $10 off of them.`)
                     }
-                    //client.instigatorCoins.run(instigator);
-                    //client.victimCoins.run(victim);
+                    client.instigatorCoins.run(instigator);
+                    client.victimCoins.run(victim);
                 }
             } else {
                 message.channel.send(`You've gotta wait a little longer, bro. There's a 60-second cooldown and you were *just* thieving ${(difference / 1000).toFixed(0)} seconds ago.`)
@@ -264,7 +264,7 @@ const Game = {
             stealTheCoins();
         }
     },
-/*
+
     createCharacter: function(message) {
         const statsEmbed = new Discord.RichEmbed();
         const embed = new Discord.RichEmbed();
@@ -338,7 +338,7 @@ const Game = {
     
     })
     },
-*/
+
     createCharacter: function(message) {
         const statsEmbed = new Discord.RichEmbed();
         const embed = new Discord.RichEmbed();
@@ -508,7 +508,7 @@ const Game = {
                     addAttributePoints(message,"charisma");
                 }
 
-                //else {message.channel.send(`You must've typed something incorrectly, please try again.`)}
+                else {message.channel.send(`You must've typed something incorrectly, please try again.`)}
             });
     },
 
