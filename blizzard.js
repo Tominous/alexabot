@@ -43,9 +43,9 @@ const BlizzardCmd = {
 						return a.tier - b.tier;
 					});
 				}
-				//characterTalentsRaw = {tier: response.data.talents[0].talents[1].tier, name: response.data.talents[0].talents[1].spell.name}
-				//BlizzardMatching.talents(characterTalentsRaw);
-				//setTimeout(() => {console.log(characterTalents);}, 1000)
+				characterTalentsRaw = {tier: response.data.talents[0].talents[1].tier, name: response.data.talents[0].talents[1].spell.name}
+				BlizzardMatching.talents(characterTalentsRaw);
+				setTimeout(() => {console.log(characterTalents);}, 1000)
 			})
 			.then(() => {
 				blizzard.wow.character(['stats'], {origin: 'us', realm: realmName, name: characterName})
@@ -80,7 +80,7 @@ const BlizzardCmd = {
 				blizzard.wow.character(['items'], { origin: 'us', realm: realmName, name: characterName })
 				.catch(function() {message.channel.send("That character doesn't exist, or you may have typed something wrong.\n```css\n Alexa WoW profile [realm name] [character name]\n```")})
 				.then(response => {
-					//console.log(response.data);
+					console.log(response.data);
 					
 					var characterClass = BlizzardMatching.classes(response);
 					var characterRace = BlizzardMatching.races(response);
@@ -97,13 +97,13 @@ const BlizzardCmd = {
 						.setTitle(`WoW Armory page`)
 						.setURL(`https://worldofwarcraft.com/en-us/character/${realmName}/${characterName}`)
 						.setDescription(`Level ${response.data.level} ${characterRace} ${characterSpec} ${characterClass}`)
-						.addField(`Main Stats`,`**Health:** ${characterStats.health}
+						.addField(`Main Statistics`,`**Health:** ${characterStats.health}
 						**${characterStats.powerType}:** ${characterStats.power}
 						**Strength:** ${characterStats.str}
 						**Agility:** ${characterStats.agi}
 						**Intellect:** ${characterStats.int}
 						**Stamina:** ${characterStats.sta}`,true)
-						.addField(`Secondary Stats`,`**Crit:** ${characterStats.critPercent.toFixed(2)}% \`\`(${characterStats.crit})\`\`
+						.addField(`Secondary Statistics`,`**Crit:** ${characterStats.critPercent.toFixed(2)}% \`\`(${characterStats.crit})\`\`
 						**Haste:** ${characterStats.hastePercent.toFixed(2)}% \`\`(${characterStats.haste})\`\`
 						**Mastery:** ${characterStats.masteryPercent.toFixed(2)}% \`\`(${characterStats.mastery})\`\`
 						**Versatility:** ${characterStats.versatility}
@@ -114,13 +114,13 @@ const BlizzardCmd = {
 						**Block:** ${characterStats.blockPercent.toFixed(2)}%`, true)
 						.addField(`Average Item Level`,`${response.data.items.averageItemLevel}`, true)
 						.addField(`Achievement Points`,`${response.data.achievementPoints}`, true)
-						/*.addField(`Level 15`, `**${characterTalents[0].name}** \`\`(${characterTalents[0].description})\`\``, true)
+						.addField(`Level 15`, `**${characterTalents[0].name}** \`\`(${characterTalents[0].description})\`\``, true)
 						.addField(`Level 30`, `**${characterTalents[1].name}** \`\`(${characterTalents[1].description})\`\``, true)
 						.addField(`Level 45`, `**${characterTalents[2].name}** \`\`(${characterTalents[2].description})\`\``, true)
 						.addField(`Level 60`, `**${characterTalents[3].name}** \`\`(${characterTalents[3].description})\`\``, true)
 						.addField(`Level 75`, `**${characterTalents[4].name}** \`\`(${characterTalents[4].description})\`\``, true)
 						.addField(`Level 90`, `**${characterTalents[5].name}** \`\`(${characterTalents[5].description})\`\``, true)
-						.addField(`Level 100`, `**${characterTalents[6].name}** \`\`(${characterTalents[6].description})\`\``, true)*/
+						.addField(`Level 100`, `**${characterTalents[6].name}** \`\`(${characterTalents[6].description})\`\``, true)
 						);
 					},500)
 				});
