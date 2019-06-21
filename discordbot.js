@@ -12,7 +12,7 @@ const bannedChannelsSql = new SQLite('./db/bannedChannels.sqlite');
 const traders = new SQLite('./db/traders.sqlite');
 
 const Game = require('./game.js');
-//const BlizzardCmd = require('./blizzard.js');
+const BlizzardCmd = require('./blizzard.js');
 const Reddit = require('./reddit.js');
 const StockMarket = require('./stockMarket.js');
 const Dnd = require('./dnd.js');
@@ -191,7 +191,7 @@ client.on('message', message => {
                 client.guilds.forEach((guild) => {
                     let defaultChannel = "";
                     guild.channels.forEach((channel) => {
-                        //console.log(channel)
+                        console.log(channel)
                         if(channel.type == "text" && defaultChannel == "") {
                             if(channel.permissionsFor(guild.me).has("SEND_MESSAGES")) {
                                 defaultChannel = channel;
@@ -216,16 +216,16 @@ client.on('message', message => {
         }
         
         if (msgContent === "alexa" || msgContent.startsWith("alexa help") || msgContent.startsWith("alexa commands")) {help(message, msgContent); featureTracker("help");}
-        /*
+        
         if (msgContent.startsWith("alexa test")) {
-            //console.log(message.mentions.members.first().user.id);
+            console.log(message.mentions.members.first().user.id);
             client.fetchUser(message.mentions.members.first().user.id).then((user) => {
                 message.channel.send(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`)
             });
-            //message.channel.send(`https://cdn.discordapp.com/avatars/${client.fetchUser(message.mentions.members.first().user.id).id}/${client.fetchUser(message.mentions.members.first().user.id).avatar}.png`)
+            message.channel.send(`https://cdn.discordapp.com/avatars/${client.fetchUser(message.mentions.members.first().user.id).id}/${client.fetchUser(message.mentions.members.first().user.id).avatar}.png`)
         }
-        */
-        //if (msgContent.startsWith("alexa listen")) {VoiceRecog.listen(client, message);}
+        
+        if (msgContent.startsWith("alexa listen")) {VoiceRecog.listen(client, message);}
         if (msgContent.startsWith("alexa vote")) {message.channel.send("Well aren't you just the sweetest lil' thang voting for me... Here ya go, qt: https://discordbots.org/bot/534469636381736981/vote"); featureTracker("vote");}
         if (msgContent.startsWith("alexa get out of")) {getOut(message,msgContent); featureTracker("getOut");}
         if (msgContent.startsWith("alexa xp")) {Game.test(message)}
@@ -247,7 +247,7 @@ client.on('message', message => {
         if (msgContent.startsWith("alexa buy")) {buy(message,client); featureTracker("buy");}
         if (msgContent.replace(/[o]/gi,"").includes("thats s sad") || msgContent.replace(/[o]/gi,"").includes("that is s sad") || msgContent.replace(/[o]/gi,"").includes("that is just s sad")) {thatsSoSad(message, client); featureTracker("thatsSoSad");}
         if (msgContent.startsWith("alexa fuck ea")) {message.channel.send("EA bAd gErAlDo gOoD");}
-        //if (msgContent.startsWith("alexa wow profile")) {BlizzardCmd.test(message, msgContent, client); featureTracker("wowProfile");}
+        if (msgContent.startsWith("alexa wow profile")) {BlizzardCmd.test(message, msgContent, client); featureTracker("wowProfile");}
         if (msgContent.startsWith("alexa give me a meme")) {Reddit.randomMeme(message); featureTracker("meme");}
         if (msgContent.startsWith("alexa give me /r/")) {Reddit.giveSub(message); featureTracker("subreddit");}
         if (msgContent.startsWith("alexa minesweeper")) {minesweeper(message); featureTracker("minesweeper");}
